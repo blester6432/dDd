@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>متجر ذخر - نسخة محسنة</title>
+  <style>
+    /* نفس التنسيقات الأساسية مع بعض التعديلات */
+    body {
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: #f0f4f9;
+      margin: 0; padding: 0;
+
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    header {
+      background: #004a99;
+      padding: 12px 20px;
+      color: white;
+      text-align: center;
+    }
+    nav {
+      margin-top: 8px;
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+    }
+    nav button {
+      background: #0073e6;
+      border: none;
+      padding: 8px 16px;
+      font-weight: bold;
+      color: white;
+      cursor: pointer;
+      border-radius: 6px;
+      transition: background 0.3s ease;
+    }
+    nav button.active {
+      background: #003366;
+    }
+    main {
+      flex-grow: 1;
+      padding: 20px;
+      max-width: 900px;
+      margin: auto;
+      width: 100%;
+    }
+    .product {
+      background: white;
+      box-shadow: 0 2px 8px rgb(0 0 0 / 0.1);
+      padding: 16px;
+      margin-bottom: 24px;
+      border-radius: 10px;
+    }
+    .product img {
+      width: 100%;
+      max-height: 160px;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+    .product h3 {
+      margin: 10px 0 6px 0;
+      font-size: 1.3rem;
+      color: #004a99;
+    }
+    .product .description {
+      font-size: 0.95rem;
+      color: #444;
+      min-height: 40px;
+    }
+    .rating span {
+      cursor: pointer;
+      font-size: 20px;
+      color: #ccc;
+      transition: color 0.3s;
+    }
+    .rating span.filled {
+      color: #ffb400;
+    }
+    .price {
+      font-weight: 700;
+      margin: 8px 0;
+      color: #0073e6;
+      font-size: 1.1rem;
+    }
+    .product button {
+      background: #0073e6;
+      border: none;
+      color: white;
+      font-weight: bold;
+      padding: 10px 16px;
+      margin-top: 8px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    .product button:hover {
+      background: #004a99;
+    }
+    .like-button {
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      color: #e0245e;
+      font-size: 18px;
+      margin-left: 8px;
+      vertical-align: middle;
+    }
+    .reviews {
+      margin-top: 12px;
+    }
+    .reviews ul {
+      list-style-type: disc;
+      margin: 8px 0 10px 20px;
+      max-height: 120px;
+      overflow-y: auto;
+      padding-right: 10px;
+      color: #333;
+      font-size: 0.9rem;
+    }
+    .reviews textarea {
+      width: 100%;
+      resize: vertical;
+      font-size: 0.95rem;
+      padding: 8px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+      margin-bottom: 6px;
+    }
+    #cart-section, #contact-section {
+      background: white;
+      padding: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      border-radius: 10px;
+      max-width: 700px;
+      margin: 0 auto 40px auto;
+    }
+    #cart-section h2, #contact-section h2 {
+      color: #004a99;
+      font-weight: 700;
+      font-size: 24px;
+      margin-bottom: 18px;
+      text-align: center;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 12px;
+    }
+    table th, table td {
+      border: 1px solid #ddd;
+      padding: 10px 8px;
+      text-align: center;
+      font-size: 0.95rem;
+    }
+    table th {
+      background: #f3f7fb;
+      color: #004a99;
+    }
+    input[type="number"] {
+      width: 60px;
+      text-align: center;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      padding: 6px;
+      font-size: 1rem;
+    }
+    #cart-total {
+      font-weight: bold;
+      font-size: 1.1rem;
+      text-align: right;
+      margin-bottom: 16px;
+      color: #0073e6;
+    }
+    form input, form textarea {
+      width: 100%;
+      font-size: 1rem;
+      padding: 10px;
+      margin-bottom: 14px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+      font-family: inherit;
+    }
+    form button {
+      background: #0073e6;
+      border: none;
+      color: white;
+      padding: 14px;
+      width: 100%;
+      font-weight: bold;
+      font-size: 1.1rem;
+      cursor: pointer;
+      border-radius: 6px;
+      transition: background 0.3s ease;
+    }
+    form button:hover {
+      background: #004a99;
+    }
+    #notification {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #0073e6;
+      color: white;
+      padding: 14px 22px;
+      border-radius: 12px;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+      font-weight: 600;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.5s ease;
+      z-index: 2000;
+      max-width: 280px;
+      text-align: center;
+    }
+    #notification.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    footer {
+      background: #003366;
+      color: white;
+      padding: 18px 20px;
+      text-align: center;
+      font-size: 14px;
+      user-select: none;
+      margin-top: auto;
+    }
+    /* Responsive */
+    @media (max-width: 600px) {
+      nav {
+        flex-wrap: wrap;
+      }
+      nav button {
+        flex: 1 1 45%;
+        margin: 6px 4px;
+        font-size: 14px;
+      }
+      .product img {
+        max-height: 130px;
+      }
+      .product h3 {
+        font-size: 1.1rem;
+      }
+      table th, table td {
+        font-size: 0.85rem;
+        padding: 8px 6px;
+      }
+      form button {
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>متجر ذخر</h1>
+  <nav>
+    <button class="active" id="show-products-btn">المنتجات</button>
+    <button id="show-cart-btn">السلة (<span id="cart-count">0</span>)</button>
+    <button id="show-contact-btn">تواصل معنا</button>
+  </nav>
+</header>
+
+<main>
+  <!-- قسم المنتجات -->
+  <section id="products-section">
+    <div id="products-container">
+      <!-- المنتجات ستعرض هنا برمجياً -->
+    </div>
+  </section>
+
+  <!-- قسم السلة -->
+  <section id="cart-section" style="display:none;">
+    <h2>سلة المشتريات</h2>
+    <table id="cart-table">
+      <thead>
+        <tr>
+          <th>المنتج</th>
+          <th>الكمية</th>
+          <th>السعر للوحدة</th>
+          <th>الإجمالي</th>
+          <th>حذف</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- محتوى السلة -->
+      </tbody>
+    </table>
+    <div id="cart-total">الإجمالي: 0 ر.س</div>
+    <form id="order-form">
+      <h3>تأكيد الطلب</h3>
+      <input type="text" id="customer-name" placeholder="الاسم الكامل" required />
+      <input type="tel" id="customer-phone" placeholder="رقم الجوال (مثال: 0551234567)" required pattern="^05[0-9]{8}$" title="رقم الجوال يجب أن يبدأ بـ 05 ويتكون من 10 أرقام" />
+      <input type="email" id="customer-email" placeholder="البريد الإلكتروني" required />
+      <button type="submit">إرسال الطلب</button>
+    </form>
+  </section>
+
+  <!-- قسم تواصل معنا -->
+  <section id="contact-section" style="display:none;">
+    <h2>تواصل معنا</h2>
+    <form id="contact-form">
+      <input type="text" id="contact-name" placeholder="الاسم" required />
+      <input type="email" id="contact-email" placeholder="البريد الإلكتروني" required />
+      <textarea id="contact-message" placeholder="رسالتك" required></textarea>
+      <button type="submit">إرسال</button>
+    </form>
+  </section>
+</main>
+
+<div id="notification"></div>
+
+<footer>
+  جميع الحقوق محفوظة © 2025 متجر ذخر
+</footer>
+
+<script>
+  const products = [
+    {
+      id: 1,
+      name: "ساعة يد ذكية",
+      description: "ساعة ذكية بمميزات متعددة مثل تتبع اللياقة وإشعارات الهاتف.",
+      price: 399,
+      image: "https://via.placeholder.com/300x160?text=ساعة+ذكية",
+      rating: 4,
+      likes: 10,
+      reviews: ["رائعة جدًا!", "خدمة ممتازة.", "سعر مناسب."]
+    },
+    {
+      id: 2,
+      name: "سماعات بلوتوث",
+      description: "سماعات لاسلكية بجودة صوت عالية وعمر بطارية طويل.",
+      price: 149,
+      image: "https://via.placeholder.com/300x160?text=سماعات+بلوتوث",
+      rating: 5,
+      likes: 20,
+      reviews: ["الصوت ممتاز.", "سهل الاستخدام."],
+    },
+    {
+      id: 3,
+      name: "هاتف ذكي",
+      description: "هاتف حديث بشاشة كبيرة وكاميرا عالية الجودة.",
+      price: 1200,
+      image: "https://via.placeholder.com/300x160?text=هاتف+ذكي",
+      rating: 3,
+      likes: 5,
+      reviews: ["كاميرا جيدة لكن البطارية تحتاج تحسين."]
+    }
+  ];
+
+  let cart = [];
+
+  const productsContainer = document.getElementById('products-container');
+  const cartSection = document.getElementById('cart-section');
+  const productsSection = document.getElementById('products-section');
+  const contactSection = document.getElementById('contact-section');
+  const cartCount = document.getElementById('cart-count');
+  const cartTableBody = document.querySelector('#cart-table tbody');
+  const cartTotal = document.getElementById('cart-total');
+  const notification = document.getElementById('notification');
+
+  const showProductsBtn = document.getElementById('show-products-btn');
+  const showCartBtn = document.getElementById('show-cart-btn');
+  const showContactBtn = document.getElementById('show-contact-btn');
+
+  function renderStars(rating) {
+    let starsHtml = '';
+    for(let i=1; i<=5; i++) {
+      starsHtml += `<span class="${i <= rating ? 'filled' : ''}" data-star="${i}">&#9733;</span>`;
+    }
+    return starsHtml;
+  }
+
+  function renderProducts() {
+    productsContainer.innerHTML = '';
+    products.forEach(product => {
+      const productDiv = document.createElement('div');
+      productDiv.className = 'product';
+      productDiv.innerHTML = `
+        <img src="${product.image}" alt="${product.name}" />
+        <h3>${product.name}</h3>
+        <p class="description">${product.description}</p>
+        <div class="rating" data-id="${product.id}">${renderStars(product.rating)}</div>
+        <div class="price">${product.price.toLocaleString()} ر.س</div>
+        <button class="add-to-cart" data-id="${product.id}">أضف إلى السلة</button>
+        <button class="like-button" data-id="${product.id}">❤️ <span class="like-count">${product.likes}</span></button>
+        <div class="reviews">
+          <strong>آراء العملاء:</strong>
+          <ul>
+            ${product.reviews.map(r => `<li>${r}</li>`).join('')}
+          </ul>
+          <textarea placeholder="اكتب رأيك هنا..."></textarea>
+          <button class="add-review-btn" data-id="${product.id}">إرسال الرأي</button>
+        </div>
+      `;
+      productsContainer.appendChild(productDiv);
+    });
+  }
+
+  // إضافة إلى السلة
+  function addToCart(id) {
+    const product = products.find(p => p.id === id);
+    if (!product) return;
+
+    const cartItem = cart.find(item => item.id === id);
+    if (cartItem) {
+      cartItem.quantity++;
+    } else {
+      cart.push({ id: product.id, quantity: 1, price: product.price, name: product.name });
+    }
+    updateCart();
+    showNotification(`تمت إضافة "${product.name}" إلى السلة.`);
+  }
+
+  // تحديث عرض السلة
+  function updateCart() {
+    cartCount.textContent = cart.reduce((acc, item) => acc + item.quantity, 0);
+
+    if(cart.length === 0){
+      cartTableBody.innerHTML = `<tr><td colspan="5">السلة فارغة</td></tr>`;
+      cartTotal.textContent = "الإجمالي: 0 ر.س";
+      return;
+    }
+
+    cartTableBody.innerHTML = '';
+    let total = 0;
+    cart.forEach(item => {
+      const subtotal = item.price * item.quantity;
+      total += subtotal;
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${item.name}</td>
+        <td><input type="number" min="1" value="${item.quantity}" data-id="${item.id}" class="cart-qty" /></td>
+        <td>${item.price.toLocaleString()} ر.س</td>
+        <td>${subtotal.toLocaleString()} ر.س</td>
+        <td><button class="remove-cart-item" data-id="${item.id}">حذف</button></td>
+      `;
+      cartTableBody.appendChild(row);
+    });
+    cartTotal.textContent = `الإجمالي: ${total.toLocaleString()} ر.س`;
+  }
+
+  // إزالة من السلة
+  function removeFromCart(id) {
+    cart = cart.filter(item => item.id !== id);
+    updateCart();
+    showNotification(`تم حذف المنتج من السلة.`);
+  }
+
+  // تحديث الكمية في السلة
+  function updateQuantity(id, qty) {
+    if(qty < 1) return;
+    const item = cart.find(i => i.id === id);
+    if(item) {
+      item.quantity = qty;
+      updateCart();
+    }
+  }
+
+  // إرسال الطلب
+  const orderForm = document.getElementById('order-form');
+  orderForm.addEventListener('submit', e => {
+    e.preventDefault();
+    if(cart.length === 0) {
+      alert("السلة فارغة! الرجاء إضافة منتجات قبل إرسال الطلب.");
+      return;
+    }
+
+    const name = document.getElementById('customer-name').value.trim();
+    const phone = document.getElementById('customer-phone').value.trim();
+    const email = document.getElementById('customer-email').value.trim();
+
+    // تحقق من رقم الجوال (بداية بـ 05 وباقي 8 أرقام)
+    const phoneRegex = /^05[0-9]{8}$/;
+    if(!phoneRegex.test(phone)) {
+      alert("رقم الجوال غير صحيح. يجب أن يبدأ بـ 05 ويحتوي على 10 أرقام.");
+      return;
+    }
+
+    // صياغة الطلب
+    const orderDetails = cart.map(item => `${item.name} (الكمية: ${item.quantity})`).join(", ");
+    alert(`شكرًا لك ${name}!\nتم استلام طلبك: ${orderDetails}\nسنتواصل معك عبر البريد الإلكتروني: ${email}`);
+
+    // إعادة ضبط السلة والنموذج
+    cart = [];
+    updateCart();
+    orderForm.reset();
+  });
+
+  // عرض التنبيهات
+  function showNotification(msg) {
+    notification.textContent = msg;
+    notification.classList.add('show');
+    setTimeout(() => {
+      notification.classList.remove('show');
+    }, 3000);
+  }
+
+  // التبديل بين الأقسام
+  function showSection(section) {
+    productsSection.style.display = 'none';
+    cartSection.style.display = 'none';
+    contactSection.style.display = 'none';
+
+    showProductsBtn.classList.remove('active');
+    showCartBtn.classList.remove('active');
+    showContactBtn.classList.remove('active');
+
+    if(section === 'products') {
+      productsSection.style.display = 'block';
+      showProductsBtn.classList.add('active');
+    } else if(section === 'cart') {
+      cartSection.style.display = 'block';
+      showCartBtn.classList.add('active');
+      updateCart();
+    } else if(section === 'contact') {
+      contactSection.style.display = 'block';
+      showContactBtn.classList.add('active');
+    }
+  }
+
+  showProductsBtn.addEventListener('click', () => showSection('products'));
+  showCartBtn.addEventListener('click', () => showSection('cart'));
+  showContactBtn.addEventListener('click', () => showSection('contact'));
+
+  // التحكم في الأحداث داخل المنتجات (إضافة، إعجاب، إضافة رأي)
+  productsContainer.addEventListener('click', e => {
+    const id = parseInt(e.target.getAttribute('data-id'));
+    if(e.target.classList.contains('add-to-cart')) {
+      addToCart(id);
+    } else if(e.target.classList.contains('like-button')) {
+      const product = products.find(p => p.id === id);
+      if(product){
+        product.likes++;
+const adminSection = document.getElementById('admin-section');
+const showAdminBtn = document.getElementById('show-admin-btn');
+const adminProductsList = document.getElementById('admin-products-list');
+const addProductBtn = document.getElementById('add-product-btn');
+
+// إظهار لوحة التحكم
+showAdminBtn.addEventListener('click', () => {
+  showSection('admin');
+  renderAdminPanel();
+});
+        renderProducts();
+      }
+    } else if(e.target.classList.contains('add-review-btn')) {
+      const textarea = e.target.previousElementSibling;
+      const reviewText = textarea.value.trim();
+      if(reviewText) {
+        const product = products.find(p => p.id === id);
+        if(product){
+          product.reviews.push(reviewText);
+          textarea.value = '';
+          renderProducts();
+          showNotification('تم إضافة رأيك بنجاح.');
+        }
+      } else {
+        alert('يرجى كتابة رأي قبل الإرسال.');
+      }
+    }
+  });
+
+  // التحكم في تغيير كمية المنتج بالسلة
+  cartTableBody.addEventListener('input', e => {
+    if(e.target.classList.contains('cart-qty')){
+      const id = parseInt(e.target.getAttribute('data-id'));
+      let qty = parseInt(e.target.value);
+      if(isNaN(qty) || qty < 1) {
+        qty = 1;
+        e.target.value = 1;
+      }
+      updateQuantity(id, qty);
+    }
+  });
+
+  // حذف منتج من السلة
+  cartTableBody.addEventListener('click', e => {
+    if(e.target.classList.contains('remove-cart-item')){
+      const id = parseInt(e.target.getAttribute('data-id'));
+      removeFromCart(id);
+    }
+  });
+
+  // نموذج تواصل معنا (عرض رسالة تأكيد)
+  const contactForm = document.getElementById('contact-form');
+  contactForm.addEventListener('submit', e => {
+    e.preventDefault();
+    alert('شكرًا لتواصلك معنا! سنرد عليك قريبًا.');
+    contactForm.reset();
+  });
+
+  renderProducts();
+  updateCart();
+
+</script>
+
+</body>
+</html>
